@@ -6,6 +6,8 @@ A performance scorecard for a fictional Canadian bank (Dominion Trust) covering 
 
 🔗 **[Live Tableau dashboard on Tableau Public](https://public.tableau.com/app/profile/ven.anusuri/viz/DominionTrustBankScorecard/MyScorecard)**
 
+![Dominion Trust Employee Performance Scorecard — live Tableau dashboard](assets/tableau_scorecard_hero.png)
+
 Built first in Tableau, then rebuilt in Power BI to compare the two architectures and translate the SQL/Tableau logic into DAX.
 
 ---
@@ -18,16 +20,7 @@ That user's-eye view drove the design: fair like-for-like rankings, no scoring p
 
 ## Architecture
 
-```
-Python (synthetic data generation + validation)
-        │
-        ▼
-SQLite (star schema + scoring views, hosted on a local server)
-        │
-        ├──► Tableau Desktop ──► Tableau Public (live dashboard)
-        │
-        └──► Power BI Desktop (migration rebuild, DAX measures)
-```
+![Architecture: Python → SQLite → Tableau and Power BI](assets/architecture.png)
 
 - **Data layer** — star schema in SQLite: 3 dimension tables, 4 fact tables, ~90K fact rows covering 12 months. All scoring, ranking, and RAG logic lives in SQL views so both BI tools consume identical, pre-validated numbers.
 - **Python** — generated the synthetic data (realistic distributions per role/branch tier) and ran validation checks (row counts, referential integrity, target ranges).
@@ -91,6 +84,12 @@ Non-applicable pillars are excluded from a role's calculation rather than zero-f
 | 🟡 Amber | ≥ 90% |
 | 🔴 Red | < 90% |
 
+### The scorecard in action
+
+Employee view: pillar-by-pillar percent to target with pillar weights, rank within role, and performance vs. target — navigable to Branch View and company-wide Leaderboard.
+
+![Pillar detail: percent to target vs. weights](assets/tableau_pillar_detail.png)
+
 ### Two ranking contexts
 
 Rankings are computed with window functions (`RANK() OVER (PARTITION BY …)`):
@@ -128,6 +127,7 @@ Key architectural difference: SQL pre-computes results at fixed grain in views; 
 
 ```
 ├── README.md
+├── assets/                # Architecture diagram + dashboard screenshots
 ├── data/                  # CSV extracts of all tables
 │   ├── dim_branch.csv
 │   ├── dim_employee.csv
@@ -158,8 +158,9 @@ This is an actively developed project:
 - [x] Tableau dashboard (published to Tableau Public)
 - [x] Power BI data model + DAX measures
 - [x] Power BI report published (.pbix in `powerbi/`)
-- [ ] Visual architecture diagram (replace the ASCII sketch above)
-- [ ] Dashboard screenshots in README
+- [x] Visual architecture diagram
+- [x] Tableau dashboard screenshots in README
+- [ ] Power BI dashboard screenshots in README
 - [ ] Publish Python data-generation scripts
 - [ ] Side-by-side Tableau vs. Power BI comparison screenshots
 

@@ -143,6 +143,8 @@ Key architectural difference: SQL pre-computes results at fixed grain in views; 
 │   └── 02_views.sql       # Scoring, ranking & RAG views
 ├── tableau/
 │   └── dominion_trust_scorecard.twb   # Production Tableau workbook
+├── powerbi/
+│   └── dominion_trust_scorecard.pbix  # Power BI rebuild (DAX)
 └── docs/
     ├── data_dictionary.md
     └── migration_notes.md   # Tableau → Power BI migration log
@@ -155,7 +157,7 @@ This is an actively developed project:
 - [x] SQL data model, scoring views, validation
 - [x] Tableau dashboard (published to Tableau Public)
 - [x] Power BI data model + DAX measures
-- [ ] Power BI dashboard layout parity + publish .pbix
+- [x] Power BI report published (.pbix in `powerbi/`)
 - [ ] Visual architecture diagram (replace the ASCII sketch above)
 - [ ] Dashboard screenshots in README
 - [ ] Publish Python data-generation scripts
